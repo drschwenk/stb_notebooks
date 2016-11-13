@@ -4,11 +4,27 @@ import json
 from collections import defaultdict
 from collections import Counter
 import string
+import matplotlib as mpl
+import matplotlib.pylab as plt
+import nltk
+import string
+from nltk.corpus import stopwords
+from nltk.tokenize import wordpunct_tokenize
+from nltk.collocations import BigramCollocationFinder
+from nltk.collocations import TrigramCollocationFinder
+
+fig_dir = './figs_to_save/'
+vocab_topics = ['Lesson Vocabulary', 'Vocabulary']
+structural_topics = ['Summary', 'Review', 'References', 'Explore More', 'Lesson Summary', 'Lesson Objectives',
+                     'Points to Consider', 'Introduction', 'Recall', 'Apply Concepts', 'Think Critically', 'Resources',
+                     'Explore More II', 'Explore More I', 'Explore More III']
+
+cached_sw = ['?', 'the', 'a', 's', "'", 'this', '.', ',', '_____', '__________', 'an']
 
 
-def tokenize_question(question_text):
-    q_tokens = wordpunct_tokenize(question_text)
-    normalized_tokens = [toke.strip().lower().encode('ascii', 'ignore').decode() for toke in q_tokens if toke.strip().lower().encode('ascii', 'ignore').decode() not in cached_sw]
+def tokenize_text(text, cached_sw):
+    tokens = wordpunct_tokenize(text)
+    normalized_tokens = [toke.strip().lower().encode('ascii', 'ignore').decode() for toke in tokens if toke.strip().lower().encode('ascii', 'ignore').decode() not in cached_sw]
     return normalized_tokens
 
 
