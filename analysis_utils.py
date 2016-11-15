@@ -31,13 +31,13 @@ def tokenize_text(text, cached_sw):
 def make_and_save_standard_fig(fig_plt, fig_labels=None, outfile='latest_fig.pdf', main_color=None, label_color = '0.25'):
     if fig_labels:
         if 'fig_title' in fig_labels:
-            plt.title(fig_labels['fig_title'], fontsize=30, verticalalignment='bottom', color = label_color)
+            plt.title(fig_labels['fig_title'], fontsize=35, verticalalignment='bottom', color=label_color)
         if 'y_label' in fig_labels:
-            plt.ylabel(fig_labels['y_label'], fontsize=25, labelpad=10, color=label_color)
+            plt.ylabel(fig_labels['y_label'], fontsize=35, labelpad=10, color=label_color)
         if 'x_label' in fig_labels:
-            plt.xlabel(fig_labels['x_label'], fontsize=25, labelpad=10, color=label_color)
-    plt.tick_params(axis='x', which='major', labelsize=15)
-    plt.tick_params(axis='y', which='major', labelsize=15)
+            plt.xlabel(fig_labels['x_label'], fontsize=30, labelpad=10, color=label_color)
+    plt.tick_params(axis='x', which='major', labelsize=20)
+    plt.tick_params(axis='y', which='major', labelsize=20)
     plt.savefig(outfile, bbox_inches='tight')
 
 
