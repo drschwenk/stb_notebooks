@@ -33,9 +33,9 @@ def make_and_save_standard_fig(fig_plt, fig_labels=None, outfile='latest_fig.pdf
         if 'fig_title' in fig_labels:
             plt.title(fig_labels['fig_title'], fontsize=30, verticalalignment='bottom', color = label_color)
         if 'y_label' in fig_labels:
-            plt.ylabel(fig_labels['y_label'], fontsize=25, labelpad=10, color = label_color)
+            plt.ylabel(fig_labels['y_label'], fontsize=25, labelpad=10, color=label_color)
         if 'x_label' in fig_labels:
-            plt.xlabel(fig_labels['x_label'], fontsize=25, labelpad=10, color = label_color)
+            plt.xlabel(fig_labels['x_label'], fontsize=25, labelpad=10, color=label_color)
     plt.tick_params(axis='x', which='major', labelsize=15)
     plt.tick_params(axis='y', which='major', labelsize=15)
     plt.savefig(outfile, bbox_inches='tight')
@@ -55,11 +55,35 @@ def make_prop_series(ds_items, property_collector):
     return pd.Series([property_collector(item) for item in ds_items.values()])
 
 
-def collect_filtered_lesson_text(complete_ds):
+def extract_topics_and_adjunct_topics(lesson):
+    values_to_return = [topic for topic in lesson['topics'].values()]
+    values_to_return += [topic for topic_name, topic in lesson['adjunctTopics'].items() if topic_name not in vocab_topics]
+    return values_to_return
+
+
+def collect_filtered_lesson_text(complete_ds, include_adjunct=False, include_descriptions=False):
     filtered_lesson_text = defaultdict(str)
     for lesson in complete_ds:
         lesson_key = lesson['lessonName'] + '_' + lesson['globalID']
         for topic_name, topic in sorted(lesson['topics'].items(), key=lambda x: x[1]['globalID']):
-            if not topic['topicName'] in structural_topics + vocab_topics:
-                filtered_lesson_text[lesson_key] += topic['content']['text'] 
+                    filtered_lesson_text[lesson_key] += topic['content']['text'] + '\n'
+        if include_adjunct:
+            for topic_name, topic in lesson['adjunctTopics'].items():
+                if topic_name not in vocab_topics:
+                    filtered_lesson_text[lesson_key] += topic['content']['text'] + '\n'
+        if include_descriptions:
+            for d_description in lesson['instructionalDiagrams'].values():
+                filtered_lesson_text[lesson_key] += d_description['processedText'] + '\n'
     return filtered_lesson_text
+
+
+def count_textbook_images(complete_ds):
+    images_encountered = 0
+    for lesson in complete_ds:
+        for topic_name, topic in sorted(lesson['topics'].items(), key=lambda x: x[1]['globalID']):
+            images_encountered += len(topic['content']['mediaLinks'])
+            len(topic['content']['mediaLinks'])
+        for topic_name, topic in lesson['adjunctTopics'].items():
+            if topic_name not in vocab_topics:
+                images_encountered += len(topic['content']['mediaLinks'])
+    return images_encountered
