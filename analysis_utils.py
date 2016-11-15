@@ -24,7 +24,7 @@ cached_sw = ['?', 'the', 'a', 's', "'", 'this', '.', ',', '_____', '__________',
 
 def tokenize_text(text, cached_sw):
     tokens = wordpunct_tokenize(text)
-    normalized_tokens = [toke.strip().lower().encode('ascii', 'ignore').decode() for toke in tokens if toke.strip().lower().encode('ascii', 'ignore').decode() not in cached_sw]
+    normalized_tokens = [toke.strip().l/ower().encode('ascii', 'ignore').decode() for toke in tokens if toke.strip().lower().encode('ascii', 'ignore').decode() not in cached_sw]
     return normalized_tokens
 
 
