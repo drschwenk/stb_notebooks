@@ -36,8 +36,8 @@ def make_and_save_standard_fig(fig_plt, fig_labels=None, outfile='latest_fig.pdf
             plt.ylabel(fig_labels['y_label'], fontsize=35, labelpad=10, color=label_color)
         if 'x_label' in fig_labels:
             plt.xlabel(fig_labels['x_label'], fontsize=30, labelpad=10, color=label_color)
-    plt.tick_params(axis='x', which='major', labelsize=20)
-    plt.tick_params(axis='y', which='major', labelsize=20)
+    plt.tick_params(axis='x', which='major', labelsize=28)
+    plt.tick_params(axis='y', which='major', labelsize=23)
     plt.savefig(outfile, bbox_inches='tight')
 
 
